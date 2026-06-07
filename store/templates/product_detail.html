@@ -1,0 +1,339 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>{{ product.name }}</title>
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+    <style>
+
+        .reviews-section{
+
+            width:90%;
+
+            margin:50px auto;
+
+            color:white;
+        }
+
+        .reviews-section form{
+
+            background:rgba(15,23,42,0.65);
+
+            backdrop-filter:blur(20px);
+
+            border:1px solid rgba(255,255,255,0.15);
+
+            border-radius:20px;
+
+            padding:25px;
+
+            margin-bottom:30px;
+        }
+
+        .reviews-section input,
+        .reviews-section textarea{
+
+            width:100%;
+
+            padding:12px;
+
+            margin-bottom:15px;
+
+            border-radius:10px;
+
+            border:none;
+
+            box-sizing:border-box;
+        }
+
+        .reviews-section button{
+
+            background:#2563eb;
+
+            color:white;
+
+            border:none;
+
+            padding:12px 25px;
+
+            border-radius:10px;
+
+            cursor:pointer;
+        }
+
+        .review-card{
+
+            background:rgba(15,23,42,0.65);
+
+            backdrop-filter:blur(20px);
+
+            border:1px solid rgba(255,255,255,0.15);
+
+            border-radius:15px;
+
+            padding:20px;
+
+            margin-bottom:15px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            <a href="/">MyStore</a>
+        </div>
+
+        <button id="theme-toggle">
+            🌙
+        </button>
+
+        <div class="nav-links">
+
+            <a href="/shop/">
+                Home
+            </a>
+
+            <a href="/dashboard/">
+                Dashboard
+            </a>
+
+            <a href="/wishlist/">
+                Wishlist ❤️
+            </a>
+
+            <a href="/cart/">
+                Cart ({{ cart_count }})
+            </a>
+
+        </div>
+
+    </nav>
+
+    <!-- PRODUCT DETAIL -->
+
+    <section class="detail-page">
+
+        <div class="detail-container">
+
+            <!-- IMAGE -->
+
+            <div class="detail-image">
+
+                {% if product.image and product.image.url %}
+
+                    <img src="{{ product.image.url }}">
+
+                {% elif product.image_url %}
+
+                    <img src="{{ product.image_url }}">
+
+                {% endif %}
+
+            </div>
+
+            <!-- INFO -->
+
+            <div class="detail-info">
+
+                <!--
+<div class="badge">
+    20% OFF
+</div>
+-->
+
+                <h1>{{ product.name }}</h1>
+
+                <div class="rating">
+                    ⭐ {{ average_rating }}/5
+                </div>
+
+                <p class="detail-description">
+                    {{ product.description }}
+                </p>
+
+                <h2>₹{{ product.price }}</h2>
+
+                <p class="category">
+                    {{ product.category }}
+                </p>
+
+                {% if product.stock > 0 %}
+
+                    <p class="stock">
+                        In Stock: {{ product.stock }}
+                    </p>
+
+                    <a href="/add-to-cart/{{ product.id }}/">
+
+                        <button class="cart-btn">
+                            Add to Cart
+                        </button>
+
+                    </a>
+                    <a href="#reviews">
+
+    <button class="cart-btn">
+        ⭐ Write Review
+    </button>
+
+</a>
+
+                {% else %}
+
+                    <p class="out-stock">
+                        Out of Stock
+                    </p>
+
+                    <button class="remove-btn" disabled>
+                        Unavailable
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- REVIEWS -->
+
+    <section id="reviews" class="reviews-section">
+
+        <h2 style="
+    text-align:center;
+    font-size:35px;
+    margin-bottom:25px;
+">
+    ⭐ Customer Reviews ⭐
+</h2>
+<p style="
+    text-align:center;
+    font-size:18px;
+    margin-bottom:20px;
+">
+    Total Reviews:
+    {{ reviews|length }}
+</p>
+
+        <form
+    method="POST"
+    style="
+        border:2px solid #2563eb;
+        padding:20px;
+        border-radius:15px;
+    "
+>
+
+            {% csrf_token %}
+
+            <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            required>
+
+            <input
+            type="number"
+            name="rating"
+            min="1"
+            max="5"
+            placeholder="Rating (1-5)"
+            required>
+
+            <textarea
+            name="comment"
+            placeholder="Write your review..."
+            required></textarea>
+
+            <button type="submit">
+
+                Submit Review
+
+            </button>
+
+        </form>
+
+        {% for review in reviews %}
+
+            <div class="review-card">
+
+                <h3>
+                    {{ review.name }}
+                </h3>
+
+                <p>
+                    ⭐ {{ review.rating }}/5
+                </p>
+
+                <p>
+                    {{ review.comment }}
+                </p>
+
+            </div>
+
+        {% empty %}
+
+            <div class="review-card">
+
+                <p>
+                    No reviews yet.
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </section>
+
+<script>
+
+const toggleBtn =
+document.getElementById("theme-toggle");
+
+// LOAD SAVED THEME
+
+if(localStorage.getItem("theme") === "dark"){
+
+    document.body.classList.add("dark-mode");
+
+    toggleBtn.innerHTML = "☀️";
+}
+
+// TOGGLE THEME
+
+toggleBtn.onclick = () => {
+
+    document.body.classList.toggle("dark-mode");
+
+    if(document.body.classList.contains("dark-mode")){
+
+        localStorage.setItem("theme", "dark");
+
+        toggleBtn.innerHTML = "☀️";
+
+    }else{
+
+        localStorage.setItem("theme", "light");
+
+        toggleBtn.innerHTML = "🌙";
+    }
+};
+
+</script>
+
+</body>
+
+</html>

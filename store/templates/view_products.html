@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+    body{
+
+        background:#0f172a;
+    }
+
+    .page-container{
+
+        padding:40px;
+    }
+
+    h1{
+
+        text-align:center;
+
+        margin-bottom:40px;
+
+        font-size:50px;
+
+        color:white;
+    }
+
+    .search-box{
+
+        width:300px;
+
+        padding:14px;
+
+        border:none;
+
+        border-radius:10px;
+
+        margin-bottom:25px;
+
+        font-size:16px;
+    }
+
+    .product-card{
+
+        background:white;
+
+        color:#0f172a;
+
+        padding:25px;
+
+        border-radius:20px;
+
+        margin-bottom:20px;
+
+        display:flex;
+
+        justify-content:space-between;
+
+        align-items:center;
+    }
+
+    .product-left{
+
+        display:flex;
+
+        align-items:center;
+
+        gap:20px;
+    }
+
+    .product-image{
+
+        width:120px;
+
+        height:120px;
+
+        object-fit:cover;
+
+        border-radius:15px;
+    }
+
+    .product-info h3{
+
+        margin:0 0 10px 0;
+
+        font-size:28px;
+    }
+
+    .product-info p{
+
+        margin:6px 0;
+
+        font-size:18px;
+    }
+
+    .button-group{
+
+        display:flex;
+
+        gap:10px;
+    }
+
+    .edit-btn{
+
+        background:#22c55e;
+
+        color:white;
+
+        border:none;
+
+        padding:12px 24px;
+
+        border-radius:10px;
+
+        cursor:pointer;
+
+        font-size:16px;
+    }
+
+    .delete-btn{
+
+        background:#ef4444;
+
+        color:white;
+
+        border:none;
+
+        padding:12px 24px;
+
+        border-radius:10px;
+
+        cursor:pointer;
+
+        font-size:16px;
+    }
+
+    button{
+
+        transition:0.3s;
+    }
+
+    button:hover{
+
+        transform:translateY(-2px);
+    }
+
+</style>
+
+<div class="page-container">
+
+    <h1>
+        All Products
+    </h1>
+
+    <form method="GET">
+
+        <input
+        type="text"
+        name="search"
+        class="search-box"
+        placeholder="Search Products...">
+
+    </form>
+
+    {% for product in products %}
+
+    <div class="product-card">
+
+        <div class="product-left">
+
+            <img
+            src="{{ product.image_url }}"
+            class="product-image">
+
+            <div class="product-info">
+
+                <h3>
+                    {{ product.name }}
+                </h3>
+
+                <p>
+                    ₹{{ product.price }}
+                </p>
+
+                <p>
+                    Category: {{ product.category }}
+                </p>
+
+                <p>
+                    Stock: {{ product.stock }}
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="button-group">
+
+            <a href="/edit-product/{{ product.id }}/">
+
+                <button
+                type="button"
+                class="edit-btn">
+
+                    Edit
+
+                </button>
+
+            </a>
+
+            <a href="/delete-product/{{ product.id }}/">
+
+                <button
+                type="button"
+                class="delete-btn">
+
+                    Delete
+
+                </button>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

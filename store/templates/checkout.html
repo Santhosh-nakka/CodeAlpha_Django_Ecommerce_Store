@@ -1,0 +1,285 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Secure Checkout</title>
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            <a href="/shop/">MyStore</a>
+        </div>
+<button id="theme-toggle">
+    🌙
+</button>
+        <div class="nav-links">
+
+           
+
+    <a href="/shop/">
+        Home
+    </a>
+
+    <a href="/dashboard/">
+        Dashboard
+    </a>
+
+    <a href="/wishlist/">
+        Wishlist ❤️
+    </a>
+
+    <a href="/cart/">
+        Cart ({{ cart_count }})
+    </a>
+
+</div>
+        </div>
+
+    </nav>
+
+    <!-- CHECKOUT PAGE -->
+
+    <section class="payment-page">
+
+        <div class="payment-container">
+
+            <!-- LEFT SIDE -->
+
+            <div class="payment-left">
+
+                <h1>
+                    Secure Payment
+                </h1>
+
+                <p class="payment-text">
+                    Complete your order securely using your card details.
+                </p>
+
+                <!-- FORM -->
+
+                <form
+    method="POST"
+    action="/success/"
+    class="payment-form"
+>
+    {% csrf_token %}
+
+                    <label>
+                        Full Name
+                    </label>
+
+                    <input
+    type="text"
+    name="customer_name"
+    placeholder="Enter your full name"
+    required
+>
+<label>
+    Email
+</label>
+
+<input
+    type="email"
+    name="customer_email"
+    placeholder="Enter your email"
+    required
+>
+<label>
+    Phone Number
+</label>
+
+<input
+    type="text"
+    name="customer_phone"
+    placeholder="9876543210"
+    required
+>
+
+                    <label>
+                        Card Number
+                    </label>
+
+                    <input
+                        type="text"
+                        placeholder="1234 5678 9012 3456"
+                    >
+
+                    <div class="payment-row">
+
+                        <div>
+
+                            <label>
+                                Expiry Date
+                            </label>
+
+                            <input
+                                type="text"
+                                placeholder="MM/YY"
+                            >
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                CVV
+                            </label>
+
+                            <input
+                                type="password"
+                                placeholder="123"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <label>
+                        Shipping Address
+                    </label>
+
+                    <textarea
+    name="customer_address"
+    placeholder="Enter your address"
+    required
+></textarea>
+
+                    <button
+    type="submit"
+    class="pay-btn"
+>
+    Pay ₹{{ total }}
+</button>
+
+                </form>
+
+            </div>
+
+            <!-- RIGHT SIDE -->
+
+            <div class="payment-right">
+
+                <h2>
+                    Order Summary
+                </h2>
+
+                <div class="summary-box">
+
+                    <p>
+                        Products Total
+                    </p>
+
+                    <span>
+                        ₹{{ total }}
+                    </span>
+
+                </div>
+
+                <div class="summary-box">
+
+                    <p>
+                        Delivery
+                    </p>
+
+                    <span>
+                        FREE
+                    </span>
+
+                </div>
+
+                <div class="summary-box">
+
+                    <p>
+                        Tax
+                    </p>
+
+                    <span>
+                        ₹0
+                    </span>
+
+                </div>
+
+                <hr>
+
+                <div class="summary-total">
+
+                    <h3>
+                        Total
+                    </h3>
+
+                    <h2>
+                        ₹{{ total }}
+                    </h2>
+
+                </div>
+
+                <div class="secure-badges">
+
+                    <div class="secure-item">
+                        🔒 Secure Payment
+                    </div>
+
+                    <div class="secure-item">
+                        ⚡ Fast Checkout
+                    </div>
+
+                    <div class="secure-item">
+                        🚚 Free Delivery
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+<script>
+
+const toggleBtn =
+document.getElementById("theme-toggle");
+
+// LOAD SAVED THEME
+
+if(localStorage.getItem("theme") === "dark"){
+
+    document.body.classList.add("dark-mode");
+
+    toggleBtn.innerHTML = "☀️";
+}
+
+// TOGGLE THEME
+
+toggleBtn.onclick = () => {
+
+    document.body.classList.toggle("dark-mode");
+
+    if(document.body.classList.contains("dark-mode")){
+
+        localStorage.setItem("theme", "dark");
+
+        toggleBtn.innerHTML = "☀️";
+
+    }else{
+
+        localStorage.setItem("theme", "light");
+
+        toggleBtn.innerHTML = "🌙";
+    }
+};
+
+</script>
+</body>
+
+</html>

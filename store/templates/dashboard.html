@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<section class="welcome-page">
+
+    <video autoplay muted loop playsinline class="bg-video">
+
+        <source
+        src="{% static 'videos/dashboard-bg.mp4' %}"
+        type="video/mp4">
+
+    </video>
+
+    <div class="welcome-overlay">
+
+        <div class="welcome-content">
+
+            <h1>
+                Santhosh Ecommerce Dashboard
+            </h1>
+
+            <p>
+                Track products, stock, wishlist
+                and store analytics in real time.
+            </p>
+
+        </div>
+
+        <div class="dashboard-grid">
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-icon">
+                    <i class="fa-solid fa-box"></i>
+                </div>
+
+                <h2>{{ total_products }}</h2>
+
+                <p>Total Products</p>
+
+            </div>
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-icon">
+                    <i class="fa-solid fa-warehouse"></i>
+                </div>
+
+                <h2>{{ total_stock }}</h2>
+
+                <p>Total Stock</p>
+
+            </div>
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-icon">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+
+                <h2>{{ total_categories }}</h2>
+
+                <p>Categories</p>
+
+            </div>
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-icon">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </div>
+
+                <h2>{{ total_cart_items }}</h2>
+
+                <p>Cart Items</p>
+
+            </div>
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-icon">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+
+                <h2>{{ total_wishlist_items }}</h2>
+
+                <p>Wishlist Items</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
